@@ -1,9 +1,9 @@
 //@version=5
+// Made by Alphainverted & artificialhuman [Update 9/3/22]
+// Copyrights: Indicator name: 'Altered Carbon' Inspired from: Richard K. Morgan's book & Netflix show: 'Altered Carbon'. I do not own it, just a fan.
 // Important: All the Scripts used in 'Altered Carbon' belong to their respective owners and I does not claim any right over them.
 
-// indicator('Altered Carbon', overlay=true)
 indicator('Altered Carbon', 'Altered Carbon', true, max_bars_back=500, max_lines_count=500, max_labels_count=500)
-
 
 
 // 1 OrderBlock //
@@ -288,7 +288,7 @@ rideDown = bbr < 0
 squeezed = res or res2
 
 // render
-col = squeezed ? color.red : rideUp ? color.aqua : rideDown ? color.navy : color.blue
+col = squeezed ? color.red : rideUp ? color.aqua : rideDown ? color.aqua : color.blue
 transparency = squeezed ? 85 : rideUp ? 85 : rideDown ? 85 : 100
 p1 = plot(upper, 'BB Upper', color=col, offset=offset1)
 p2 = plot(lower, 'BB Lower', color=col, offset=offset1)
@@ -310,7 +310,7 @@ fill(p1, p2, title='Background', color=color.new(col, transparency))
 // EMAs
 len1 = input.int(12, minval=1, title='XO 12', group='EMAs')
 len2 = input.int(21, minval=1, title='XO 21', group='EMAs')
-len3 = input.int(50, minval=1, title='EMA 3', group='EMAs')
+len3 = input.int(55, minval=1, title='EMA 3', group='EMAs')
 len4 = input.int(100, minval=1, title='EMA 4', group='EMAs')
 len5 = input.int(200, minval=1, title='EMA 5', group='EMAs')
 
@@ -322,9 +322,9 @@ ema5 = ta.ema(close, len5)
 
 plot(ema1, title='XO 12', color=close[1] > ema1 and close > ema1 ? color.aqua : color.red)
 plot(ema2, title='XO 21', color=close[1] > ema2 and close > ema2 ? color.aqua : color.red)
-plot(ema3, title='EMA 3', color=close[1] > ema3 and close > ema3 ? color.aqua : color.red)
-plot(ema4, title='EMA 4', color=close[1] > ema4 and close > ema4 ? color.aqua : color.red)
-plot(ema5, title='EMA 5', color=close[1] > ema5 and close > ema5 ? color.aqua : color.red)
+plot(ema3, title='EMA 3 [Def=55]', color=close[1] > ema3 and close > ema3 ? color.aqua : color.red)
+plot(ema4, title='EMA 4 [Def=100]', color=close[1] > ema4 and close > ema4 ? color.aqua : color.red)
+plot(ema5, title='EMA 5 [Def=200]', color=close[1] > ema5 and close > ema5 ? color.aqua : color.red)
 
 //Cross
 bull = ta.crossover(ema1, ema2)
@@ -335,8 +335,11 @@ barcolor(bull ? color.white : na, title='XO Cross Up Bar Colors')
 barcolor(bear ? color.white : na, title='XO Cross Down Bar Colors')
 
 //X cross
-plotshape(bull, title='XO Cross Up', text='X', textcolor=color.new(color.white, 0), style=shape.xcross, size=size.tiny, location=location.belowbar, color=color.new(color.aqua, 0))
-plotshape(bear, title='XO Cross Down', text='X', textcolor=color.new(color.white, 0), style=shape.xcross, size=size.tiny, location=location.abovebar, color=color.new(color.red, 0))
+plotshape(bull, title='XO Cross Up', style=shape.xcross, size=size.tiny, location=location.belowbar, color=color.new(color.white, 0))
+plotshape(bear, title='XO Cross Down', style=shape.xcross, size=size.tiny, location=location.abovebar, color=color.new(color.white, 0))
+//O.G.
+//plotshape(bull, title='XO Cross Up', text='X', textcolor=color.new(color.white, 0), style=shape.xcross, size=size.tiny, location=location.belowbar, color=color.new(color.aqua, 0))
+//plotshape(bear, title='XO Cross Down', text='X', textcolor=color.new(color.white, 0), style=shape.xcross, size=size.tiny, location=location.abovebar, color=color.new(color.red, 0))
 
 //alert
 alertcondition(bull, title='EMA Cross UP', message='EMA Cross UP')
@@ -463,14 +466,14 @@ alertcondition(shortsignal, title='Short Signal', message='Short Signal')
 
 
 
-// 6 Reversal Finder [triangleup] [xcross] [cross]
+// 6 Reversal Finder [triangleup] [xcross] [cross] [X] [+]
 // Reversal Finder: © OG Credit: Created by: NS91 2020
 // Inputs
-lookback = input(20, 'Lookback period for highs and lows', group='Reversal Finder [triangleup] [xcross] [cross]')
-malen2 = input(20, 'SMA length for candles range', group='Reversal Finder [triangleup] [xcross] [cross]')
+lookback = input(20, 'Lookback period for highs and lows', group='Reversal Finder [triangleup] [X] [+]')
+malen2 = input(20, 'SMA length for candles range', group='Reversal Finder [triangleup] [X] [+]')
 avrange = ta.sma(high - low, malen2)
-mult = input(1.5, 'Range multiple', group='Reversal Finder [triangleup] [xcross] [cross]')
-rangethreshold = input.int(50, 'Range threshold (% of candle range)', maxval=99, group='Reversal Finder [triangleup] [xcross] [cross]') / 100
+mult = input(1.5, 'Range multiple', group='Reversal Finder [triangleup] [X] [+]')
+rangethreshold = input.int(50, 'Range threshold (% of candle range)', maxval=99, group='Reversal Finder [triangleup] [X] [+]') / 100
 
 // Signal conditions
 longsig = high - low >= avrange * mult and low < ta.lowest(low[1], lookback) and close >= high - (high - low) * rangethreshold
@@ -503,6 +506,10 @@ ReversalShort = low[0] < low[1] and high[0] > high[1] and close[0] < high[0] - (
 // Bar Colors and signals
 plotshape(ReversalLong, title='ReversalLong [BUY]', location=location.belowbar, color=color.new(#2962ff, 0), style=shape.triangleup, text='BUY')
 plotshape(ReversalShort, title='ReversalShort [SELL]', location=location.abovebar, color=color.new(#f23645, 0), style=shape.triangledown, text='SELL')
+
+//alert
+alertcondition(ReversalLong, title='ReversalLong [BUY]', message='ReversalLong [BUY]')
+alertcondition(ReversalShort, title='ReversalShort [SELL]', message='ReversalShort [SELL]')
 
 
 
@@ -586,6 +593,6 @@ barcolor(Barcolor ? sell ? #ffffff : buy ? #ffffff : sellovershoot ? #ffffff : s
 
 
 
-
-// Important: All the Scripts used in 'Altered Carbon' belong to their respective owners and I does not claim any right over them.
+// Copyrights: Indicator name: 'Altered Carbon' Inspired from: Richard K. Morgan's book & Netflix show: 'Altered Carbon'. I do not own it, just a fan.
+// Important: All the Scripts/name used in 'Altered Carbon' belong to their respective owners and I does not claim any right over them.
 // Thank you.
