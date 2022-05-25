@@ -1,5 +1,6 @@
 //@version=5
-// Made by Alphainverted & artificialhuman [Update 9/3/22]
+// "Made" by Alphainverted [Update 9/3/22]
+// Converted to Version 5 by Alphainverted
 // Copyrights: Indicator name: 'Altered Carbon' Inspired from: Richard K. Morgan's book & Netflix show: 'Altered Carbon'. I do not own it, just a fan.
 // Important: All the Scripts used in 'Altered Carbon' belong to their respective owners and I does not claim any right over them.
 
@@ -12,7 +13,7 @@ indicator('Altered Carbon', 'Altered Carbon', true, max_bars_back=500, max_lines
 
 //Inputs
 showlabels  = input.bool(defval=false,        title='Show OrderBlock Labels?',                                            group='OrderBlock Settings',          tooltip='Display the price of each detected OrderBlock as Labels. Note that you should not in any way interpret these «Arrows» as signals to buy or sell.')
-rline       = input.bool(defval=true,         title='Show Retracement Lines?',                                            group='OrderBlock Settings',          tooltip='Displays lines according to detected OrderBlocks Candles. These lines can indicate a potential retracement area.')
+rline       = input.bool(defval=false,         title='Show Retracement Lines?',                                            group='OrderBlock Settings',          tooltip='Displays lines according to detected OrderBlocks Candles. These lines can indicate a potential retracement area.')
 layout      = input.string(defval='Wick',     title='Layout Type',                 options=['Wick', 'Zone', 'Average'],   group='OrderBlock Settings')
 highcolor   = input.color(defval=color.red,   title='High Zones Color',                                                   group='OrderBlock Settings',          inline='color')
 lowcolor    = input.color(defval=color.aqua,  title='Low Zones Color',                                                    group='OrderBlock Settings',          inline='color')
@@ -21,7 +22,7 @@ linessize   = input.int(defval=1,             title='Size',                     
 maxlines    = input.int(defval=10,            title='Maximum Lines Displayed',     minval=1, maxval=500,                  group='OrderBlock Settings')
 showprice   = input.bool(defval=true,         title='Show Last Levels Price?',                                            group='OrderBlock Settings')
 extend      = input.bool(defval=false,        title='Extend Lines?',                                                      group='OrderBlock Settings',          tooltip='Extending lines can be usefull to see zones already retraced while keeping in mind that they can still have an impact on the current trend even if they have been already retraced.')
-transp      = input.int(defval=0,             title='Extended Lines Transparency', minval=1, maxval=100,                  group='OrderBlock Settings')
+transp      = input.int(defval=0,             title='Extended Lines Transparency', minval=0, maxval=100,                  group='OrderBlock Settings')
 ob          = input.int(defval=2,             title='Offset',                      minval=1,                              group='Advanced OrderBlock Settings', tooltip='Relevant periods to identify and search for the potential OrderBlock.')
 percmove    = input.float(defval=0.6,         title='Move Percentage',             minval=0, step=0.1,                    group='Advanced OrderBlock Settings', tooltip='Required number of subsequent Candles in the same direction to identify an OrderBlock. The value you should use may differ between 2 - 5 depending on the Financial Instrument used. (0 = Disabled).')
 obalerts    = input.bool(defval=true,         title='Enable OrderBlocks Alerts?',                                         group='OrderBlock Alerts Setup')
@@ -32,7 +33,7 @@ highzonescolor  = color(na)
 lowzonescolor   = color(na)
 highzonescolor := highcolor
 lowzonescolor  := lowcolor
-
+ 
 //Color Call Function
 fzonecolor(obcolor, _call) =>
     c1 = color.r(obcolor)
@@ -306,7 +307,8 @@ fill(p1, p2, title='Background', color=color.new(col, transparency))
 
 
 // 3 EMAs //
-// EMA cross [XOE]: inspired from: TraderXO, BTC_Charlie (Twitter), vitruvius (Stack Overflow)
+// Code by: Alphainverted
+// EMA cross [XOE]: inspired from: TraderXO (trading style), vitruvius (Stack Overflow)
 // EMAs
 len1 = input.int(12, minval=1, title='XO 12', group='EMAs')
 len2 = input.int(21, minval=1, title='XO 21', group='EMAs')
@@ -455,7 +457,7 @@ longsignal = lowleftempty and (l01 and Wlongsignal or l02 and Elongsignal or l03
 shortsignal = highleftempty and (l01 and Wlongsignal or l02 and Eshortsignal or l03 and Oshortsignal or l04 and Dshortsignal)
 
 plotshape(longsignal, 'Bottom [B]', color=color.new(color.blue, 0), location=location.belowbar, style=shape.triangleup, text='B', size=size.tiny)
-plotshape(shortsignal, 'Top [T]', color=color.new(color.red, 0), location=location.abovebar, style=shape.triangledown, text='T', size=size.tiny)
+plotshape(shortsignal, 'Top [T]', color=color.new(color.red, 0), location=location.abovebar, style=shape.triangledown, text='T', size=size.tiny, textcolor=color.new(color.red, 0))
 
 alertcondition(longsignal, title='Long Signal', message='Long Signal')
 alertcondition(shortsignal, title='Short Signal', message='Short Signal')
@@ -505,7 +507,7 @@ ReversalShort = low[0] < low[1] and high[0] > high[1] and close[0] < high[0] - (
 
 // Bar Colors and signals
 plotshape(ReversalLong, title='ReversalLong [BUY]', location=location.belowbar, color=color.new(#2962ff, 0), style=shape.triangleup, text='BUY')
-plotshape(ReversalShort, title='ReversalShort [SELL]', location=location.abovebar, color=color.new(#f23645, 0), style=shape.triangledown, text='SELL')
+plotshape(ReversalShort, title='ReversalShort [SELL]', location=location.abovebar, color=color.new(#f23645, 0), style=shape.triangledown, text='SELL', textcolor=color.new(#f23645, 0))
 
 //alert
 alertcondition(ReversalLong, title='ReversalLong [BUY]', message='ReversalLong [BUY]')
@@ -519,7 +521,7 @@ alertcondition(ReversalShort, title='ReversalShort [SELL]', message='ReversalSho
 
 // 8 TD9 //
 // Credit: OG version 1 Code: TD Sequential by glaz 
-// Converted to Version 5 by © artificialhuman
+// Converted to Version 5 by Alphainverted
 //indicator('TD Sequential', overlay=true)
 //transp1=input(0, group='TD Sequential')
 Numbers=input(true, group='TD Sequential')
