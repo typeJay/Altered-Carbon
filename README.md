@@ -1,5 +1,8 @@
 Let’s face it, trying to predict the market is like rolling the dice at a casino, but stacking a few "reliable" technical indicators might just help you avoid getting completely *rekt*. This strategy is a next-level blend of the classics—Supertrend, Bollinger Bands, Demark Reversal Points, Candlestick Patterns, and TD9. You’ve probably seen these names pop up on your favourite trading guru's feed. Well, we’re throwing them all into one setup to help you catch trends and reversals like a pro (or at least, like someone pretending to be one). Whether it’s spotting oversold bags or timing that sweet reversal, this guide breaks down how each indicator works and how they come together for max *alpha*. But remember, this isn’t financial advice, fam—DYOR, or risk becoming exit liquidity.
 
+![Screenshot 2024-09-20 130148](https://github.com/user-attachments/assets/2ecd2dcc-47da-4fb7-a5d2-49ff887a0a72)
+
+
 1. Supertrend  
 Supertrend is like your trend-setting buddy, telling you if the market is partying up or down. Think of it as a traffic light:  
 - Green Light (Uptrend): Prices are cruising up, marked by a line below the price.  
